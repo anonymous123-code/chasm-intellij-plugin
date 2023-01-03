@@ -35,5 +35,6 @@
         <lang.syntaxHighlighterFactory
             language="Chassembly"
             implementationClass="io.github.anonymous123_code.chasmlang.ChassemblySyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="io.github.anonymous123_code.chasmlang.ChassemblyColorSettingsPage"/>
     </extensions>
 </idea-plugin>

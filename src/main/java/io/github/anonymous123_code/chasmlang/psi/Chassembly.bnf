@@ -1,0 +1,50 @@
+{
+  parserClass="io.github.anonymous123_code.chasmlang.parser.ChassemblyParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Chassembly"
+  psiImplClassSuffix="Impl"
+  psiPackage="io.github.anonymous123_code.chasmlang.psi"
+  psiImplPackage="io.github.anonymous123_code.chasmlang.psi.impl"
+
+  elementTypeHolderClass="io.github.anonymous123_code.chasmlang.psi.ChassemblyTypes"
+  elementTypeClass="io.github.anonymous123_code.chasmlang.psi.ChassemblyElementType"
+  tokenTypeClass="io.github.anonymous123_code.chasmlang.psi.ChassemblyTokenType"
+}
+
+chassemblyFile ::= expression
+
+expression ::= (lambdaExpression | ternaryExpression)
+
+lambdaExpression ::= IDENTIFIER LAMBDA_OPERATOR expression
+ternaryExpression ::= booleanOrExpression (TERNARY_OPERATOR ternaryExpression COLON ternaryExpression)?
+
+booleanOrExpression ::= booleanAndExpression (BOOLEAN_OR_OPERATOR booleanAndExpression)*
+booleanAndExpression ::= bitwiseOrExpression (BOOLEAN_AND_OPERATOR bitwiseOrExpression)*
+
+bitwiseOrExpression ::= bitwiseXorExpression (BITWISE_OR_OPERATOR bitwiseXorExpression)*
+bitwiseXorExpression ::= bitwiseAndExpression (BITWISE_XOR_OPERATOR bitwiseAndExpression)*
+bitwiseAndExpression ::= equalityExpression (BITWISE_AND_OPERATOR equalityExpression)*
+
+equalityExpression ::= relationalExpression ((EQUAL_OPERATOR | NOT_EQUAL_OPERATOR) relationalExpression)*
+relationalExpression ::= shiftExpression ((LESS_THAN_OPERATOR | LESS_THAN_OR_EQUAL_OPERATOR | GREATER_THAN_OPERATOR | GREATER_THAN_OR_EQUAL_OPERATOR) shiftExpression)*
+
+shiftExpression ::= additiveExpression ((SHIFT_LEFT_OPERATOR | SHIFT_RIGHT_OPERATOR | SHIFT_RIGHT_UNSIGNED_OPERATOR) additiveExpression)*
+
+additiveExpression ::= multiplicativeExpression ((PLUS_OPERATOR | MINUS_OPERATOR) multiplicativeExpression)*
+multiplicativeExpression ::= unaryExpression ((MULTIPLY_OPERATOR | DIVIDE_OPERATOR | MODULO_OPERATOR) unaryExpression)*
+
+unaryExpression ::= (PLUS_OPERATOR | MINUS_OPERATOR | NOT_OPERATOR | INVERT_OPERATOR)? argumentExpression
+
+argumentExpression ::= primaryExpression ((LEFT_PARANTHESES expression RIGHT_PARANTHESES) | (LEFT_BRACKETS expression RIGHT_BRACKETS) | (DOT (IDENTIFIER | REFERENCE_LITERAL)))*
+primaryExpression ::= literalExpression | referenceExpression | parenthesesExpression | listExpression | mapExpression
+
+literalExpression ::= (NULL_LITERAL | BOOLEAN_LITERAL | DEC_INTEGER_LITERAL | HEX_INTEGER_LITERAL | BIN_INTGER_LITERAL | FLOAT_LITERAL | STRING_LITERAL | CHAR_LITERAL)
+referenceExpression ::= ("$")? (IDENTIFIER | REFERENCE_LITERAL)
+parenthesesExpression ::= (LEFT_PARANTHESES expression RIGHT_PARANTHESES)
+listExpression ::= LEFT_BRACKETS (expression (COMMA expression)* (COMMA)?)? RIGHT_BRACKETS
+mapExpression ::= LEFT_BRACES (map_element_ (COMMA map_element_)* (COMMA)?)? RIGHT_BRACES
+private map_element_ ::= (IDENTIFIER | STRING_LITERAL) COLON expression
+
+commentToken ::= COMMENT

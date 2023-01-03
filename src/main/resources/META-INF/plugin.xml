@@ -35,6 +35,9 @@
         <lang.syntaxHighlighterFactory
             language="Chassembly"
             implementationClass="io.github.anonymous123_code.chasmlang.ChassemblySyntaxHighlighterFactory"/>
+        <lang.braceMatcher
+            language="Chassembly"
+            implementationClass="io.github.anonymous123_code.chasmlang.ChassemblyBraceMatcher"/>
         <colorSettingsPage implementation="io.github.anonymous123_code.chasmlang.ChassemblyColorSettingsPage"/>
     </extensions>
 </idea-plugin>

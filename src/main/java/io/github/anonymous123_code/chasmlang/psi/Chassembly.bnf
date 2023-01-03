@@ -37,7 +37,15 @@ multiplicativeExpression ::= unaryExpression ((MULTIPLY_OPERATOR | DIVIDE_OPERAT
 
 unaryExpression ::= (PLUS_OPERATOR | MINUS_OPERATOR | NOT_OPERATOR | INVERT_OPERATOR)? argumentExpression
 
-argumentExpression ::= primaryExpression ((LEFT_PARANTHESES expression RIGHT_PARANTHESES) | (LEFT_BRACKETS expression RIGHT_BRACKETS) | (DOT (IDENTIFIER | REFERENCE_LITERAL)))*
+argumentExpression ::= (callExpression | arrayAccessExpression | propertyAccessExpression | primaryExpression) // TODO: HACKY, there might be a better solution than this to method calls
+callExpression ::= primaryExpression callExpressionEnd argumentExpressionEnd
+arrayAccessExpression ::= primaryExpression arrayAccessExpressionEnd argumentExpressionEnd
+propertyAccessExpression ::= primaryExpression propertyAccessExpressionEnd argumentExpressionEnd
+private callExpressionEnd ::= LEFT_PARANTHESES expression RIGHT_PARANTHESES
+private arrayAccessExpressionEnd ::= LEFT_BRACKETS expression RIGHT_BRACKETS
+private propertyAccessExpressionEnd ::= DOT (IDENTIFIER | REFERENCE_LITERAL)
+private argumentExpressionEnd ::= (callExpressionEnd | arrayAccessExpressionEnd | propertyAccessExpressionEnd)*
+
 primaryExpression ::= literalExpression | referenceExpression | parenthesesExpression | listExpression | mapExpression
 
 literalExpression ::= (NULL_LITERAL | BOOLEAN_LITERAL | DEC_INTEGER_LITERAL | HEX_INTEGER_LITERAL | BIN_INTGER_LITERAL | FLOAT_LITERAL | STRING_LITERAL | CHAR_LITERAL)
@@ -47,4 +55,4 @@ listExpression ::= LEFT_BRACKETS (expression (COMMA expression)* (COMMA)?)? RIGH
 mapExpression ::= LEFT_BRACES (map_element_ (COMMA map_element_)* (COMMA)?)? RIGHT_BRACES
 private map_element_ ::= (IDENTIFIER | STRING_LITERAL) COLON expression
 
-commentToken ::= COMMENT
+commentToken ::= LINE_COMMENT | BLOCK_COMMENT

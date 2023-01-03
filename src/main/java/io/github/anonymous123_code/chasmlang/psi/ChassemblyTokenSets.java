@@ -1,10 +1,26 @@
 package io.github.anonymous123_code.chasmlang.psi;
 
 import com.intellij.psi.tree.TokenSet;
+import static io.github.anonymous123_code.chasmlang.psi.ChassemblyTypes.*;
 
 
 public interface ChassemblyTokenSets {
-    TokenSet IDENTIFIERS = TokenSet.create(ChassemblyTypes.IDENTIFIER);
-    TokenSet COMMENTS = TokenSet.create(ChassemblyTypes.COMMENT);
-    TokenSet STRING_LITERALS = TokenSet.create(ChassemblyTypes.STRING_LITERAL);
+    TokenSet IDENTIFIERS = TokenSet.create();
+    TokenSet KEYWORDS = TokenSet.create(BOOLEAN_LITERAL, NULL_LITERAL);
+    TokenSet OPERATORS = TokenSet.create(BITWISE_OR_OPERATOR, BITWISE_XOR_OPERATOR, BITWISE_AND_OPERATOR,
+            EQUAL_OPERATOR, NOT_EQUAL_OPERATOR, LESS_THAN_OR_EQUAL_OPERATOR, LESS_THAN_OPERATOR, GREATER_THAN_OR_EQUAL_OPERATOR,
+            GREATER_THAN_OPERATOR, BOOLEAN_OR_OPERATOR, BOOLEAN_AND_OPERATOR, NOT_EQUAL_OPERATOR,
+            MULTIPLY_OPERATOR, DIVIDE_OPERATOR, MODULO_OPERATOR, PLUS_OPERATOR, MINUS_OPERATOR, INVERT_OPERATOR, NOT_OPERATOR,
+            SHIFT_LEFT_OPERATOR, SHIFT_LEFT_OPERATOR, SHIFT_RIGHT_UNSIGNED_OPERATOR, TERNARY_OPERATOR, LAMBDA_OPERATOR, COLON);
+    TokenSet NUMBERS = TokenSet.create(FLOAT_LITERAL, HEX_INTEGER_LITERAL, BIN_INTGER_LITERAL, DEC_INTEGER_LITERAL);
+    TokenSet STRING_LITERALS = TokenSet.create(STRING_LITERAL, CHAR_LITERAL);
+    TokenSet BRACKETS = TokenSet.create(LEFT_BRACKETS, RIGHT_BRACKETS);
+    TokenSet BRACES = TokenSet.create(LEFT_BRACES, RIGHT_BRACES);
+    TokenSet PARENTHESES = TokenSet.create(LEFT_PARANTHESES, RIGHT_PARANTHESES);
+    TokenSet COMMAS = TokenSet.create(COMMA);
+    TokenSet DOTS = TokenSet.create(DOT);
+    TokenSet FUNCTION_CALLS = TokenSet.create(CALL_EXPRESSION);
+    TokenSet COMMENTS = TokenSet.create(LINE_COMMENT, BLOCK_COMMENT);
+    TokenSet LINE_COMMENTS = TokenSet.create(LINE_COMMENT);
+    TokenSet BLOCK_COMMENTS = TokenSet.create(BLOCK_COMMENT);
 }

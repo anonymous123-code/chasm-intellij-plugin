@@ -21,7 +21,7 @@ import static io.github.anonymous123_code.chasmlang.psi.ChassemblyTypes.*;
 EOL = \R
 WHITE_SPACE = \s+
 LineComment = "//" ([^\n])*
-InlineComment = "/*" ([^*] | ("*" [^/]))* "*/"
+BlockComment = "/*" ([^*] | ("*" [^/]))* "*/"
 Sign = "+" | "-"
 Digit = [0-9]
 HexDigit = {Digit} | [a-fA-F]
@@ -37,8 +37,8 @@ ReferenceLiteralChar = [^\`\\] | "\\`" | "\\\\"
 <YYINITIAL> {
     {WHITE_SPACE}                                   { return WHITE_SPACE; }
     {EOL}                                           { return WHITE_SPACE; }
-    {LineComment}                                   { return COMMENT; }
-    {InlineComment}                                 { return COMMENT; }
+    {LineComment}                                   { return LINE_COMMENT; }
+    {BlockComment}                                  { return BLOCK_COMMENT; }
 }
 
 // LiteralTokens

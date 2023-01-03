@@ -32,5 +32,8 @@
         <lang.parserDefinition
             language="Chassembly"
             implementationClass="io.github.anonymous123_code.chasmlang.ChasmParserDefinition"/>
+        <lang.syntaxHighlighterFactory
+            language="Chassembly"
+            implementationClass="io.github.anonymous123_code.chasmlang.ChassemblySyntaxHighlighterFactory"/>
     </extensions>
 </idea-plugin>

@@ -37,14 +37,10 @@ multiplicativeExpression ::= unaryExpression ((MULTIPLY_OPERATOR | DIVIDE_OPERAT
 
 unaryExpression ::= (PLUS_OPERATOR | MINUS_OPERATOR | NOT_OPERATOR | INVERT_OPERATOR)? argumentExpression
 
-argumentExpression ::= (callExpression | arrayAccessExpression | propertyAccessExpression | primaryExpression) // TODO: HACKY, there might be a better solution than this to method calls
-callExpression ::= primaryExpression callExpressionEnd argumentExpressionEnd
-arrayAccessExpression ::= primaryExpression arrayAccessExpressionEnd argumentExpressionEnd
-propertyAccessExpression ::= primaryExpression propertyAccessExpressionEnd argumentExpressionEnd
-private callExpressionEnd ::= LEFT_PARANTHESES expression RIGHT_PARANTHESES
-private arrayAccessExpressionEnd ::= LEFT_BRACKETS expression RIGHT_BRACKETS
-private propertyAccessExpressionEnd ::= DOT (IDENTIFIER | REFERENCE_LITERAL)
-private argumentExpressionEnd ::= (callExpressionEnd | arrayAccessExpressionEnd | propertyAccessExpressionEnd)*
+argumentExpression ::= primaryExpression (call | arrayAccess | propertyAccess)*
+call ::= LEFT_PARANTHESES expression RIGHT_PARANTHESES
+arrayAccess ::= LEFT_BRACKETS expression RIGHT_BRACKETS
+propertyAccess ::= DOT (IDENTIFIER | REFERENCE_LITERAL)
 
 primaryExpression ::= literalExpression | referenceExpression | parenthesesExpression | listExpression | mapExpression
 

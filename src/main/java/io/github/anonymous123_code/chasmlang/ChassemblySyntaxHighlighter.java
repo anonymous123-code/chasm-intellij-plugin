@@ -94,10 +94,6 @@ public class ChassemblySyntaxHighlighter extends SyntaxHighlighterBase {
             return DOT_KEYS;
         }
 
-        if (ChassemblyTokenSets.FUNCTION_CALLS.contains(tokenType)) {
-            return FUNCTION_CALL_KEYS;
-        }
-
         if (ChassemblyTokenSets.KEYWORDS.contains(tokenType)) {
             return KEYWORD_KEYS;
         }

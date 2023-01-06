@@ -38,17 +38,48 @@ multiplicativeExpression ::= unaryExpression ((MULTIPLY_OPERATOR | DIVIDE_OPERAT
 unaryExpression ::= (PLUS_OPERATOR | MINUS_OPERATOR | NOT_OPERATOR | INVERT_OPERATOR)? argumentExpression
 
 argumentExpression ::= primaryExpression (call | arrayAccess | propertyAccess)*
-call ::= LEFT_PARANTHESES expression RIGHT_PARANTHESES
-arrayAccess ::= LEFT_BRACKETS expression RIGHT_BRACKETS
+
+call ::= LEFT_PARANTHESES callParam RIGHT_PARANTHESES
+private callParam ::= expression { recoverWhile = callParamRecovery}
+private callParamRecovery ::= !(RIGHT_PARANTHESES)
+
+arrayAccess ::= LEFT_BRACKETS arrayAccessParam RIGHT_BRACKETS
+private arrayAccessParam ::= expression {recoverWhile = arrayAccessParamRecovery}
+private arrayAccessParamRecovery ::= !(RIGHT_BRACKETS)
+
 propertyAccess ::= DOT (IDENTIFIER | REFERENCE_LITERAL)
 
 primaryExpression ::= literalExpression | referenceExpression | parenthesesExpression | listExpression | mapExpression
 
 literalExpression ::= (NULL_LITERAL | BOOLEAN_LITERAL | DEC_INTEGER_LITERAL | HEX_INTEGER_LITERAL | BIN_INTGER_LITERAL | FLOAT_LITERAL | STRING_LITERAL | CHAR_LITERAL)
+
 referenceExpression ::= ("$")? (IDENTIFIER | REFERENCE_LITERAL)
-parenthesesExpression ::= (LEFT_PARANTHESES expression RIGHT_PARANTHESES)
-listExpression ::= LEFT_BRACKETS (expression (COMMA expression)* (COMMA)?)? RIGHT_BRACKETS
-mapExpression ::= LEFT_BRACES (map_element_ (COMMA map_element_)* (COMMA)?)? RIGHT_BRACES
-private map_element_ ::= (IDENTIFIER | STRING_LITERAL) COLON expression
+
+parenthesesExpression ::= (LEFT_PARANTHESES parenthesesInnerExpression RIGHT_PARANTHESES)
+private parenthesesInnerExpression ::= expression { recoverWhile=parenthesesInnerExpressionRecovery }
+private parenthesesInnerExpressionRecovery ::= !(RIGHT_PARANTHESES)
+
+listExpression ::= LEFT_BRACKETS listExpressionElements? RIGHT_BRACKETS
+private listExpressionElements ::= listExpressionElementsElement (COMMA listExpressionElementsElement)*  (COMMA)? { recoverWhile=listExpressionElementsRecovery }
+private listExpressionElementsRecovery ::= !(RIGHT_BRACKETS)
+private listExpressionElementsElement ::= expression { recoverWhile=listExpressionElementsElementRecovery }
+private listExpressionElementsElementRecovery ::= !(COMMA | RIGHT_BRACKETS)
+
+mapExpression ::= mapExpressionEmpty | mapExpressionFull
+private mapExpressionEmpty ::= LEFT_BRACES RIGHT_BRACES { pin = 2 }
+private mapExpressionFull ::= LEFT_BRACES mapExpressionElements RIGHT_BRACES { pin = 2 }
+private mapExpressionElements ::= mapKeyValuePair (COMMA mapKeyValuePair)* (COMMA)? { recoverWhile=mapExpressionElementsRecovery }
+private mapExpressionElementsRecovery ::= !(RIGHT_BRACES)
+
+mapKeyValuePair ::= mapKey COLON mapValue { recoverWhile=mapKeyValuePairRecovery pin=1 }
+private mapKeyValuePairRecovery ::= !(RIGHT_BRACES | COMMA)
+
+mapKey ::= (IDENTIFIER | STRING_LITERAL) { recoverWhile=mapKeyRecovery }
+private mapKeyRecovery ::= !(RIGHT_BRACES | COMMA | COLON)
+
+mapValue ::= expression { recoverWhile=mapValueRecovery }
+private mapValueRecovery ::= !(RIGHT_BRACES | COMMA)
+
+// List, map, call, map access need recover
 
 commentToken ::= LINE_COMMENT | BLOCK_COMMENT

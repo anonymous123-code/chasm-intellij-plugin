@@ -19,7 +19,6 @@ public interface ChassemblyTokenSets {
     TokenSet PARENTHESES = TokenSet.create(LEFT_PARANTHESES, RIGHT_PARANTHESES);
     TokenSet COMMAS = TokenSet.create(COMMA);
     TokenSet DOTS = TokenSet.create(DOT);
-    TokenSet FUNCTION_CALLS = TokenSet.create(CALL_EXPRESSION);
     TokenSet COMMENTS = TokenSet.create(LINE_COMMENT, BLOCK_COMMENT);
     TokenSet LINE_COMMENTS = TokenSet.create(LINE_COMMENT);
     TokenSet BLOCK_COMMENTS = TokenSet.create(BLOCK_COMMENT);

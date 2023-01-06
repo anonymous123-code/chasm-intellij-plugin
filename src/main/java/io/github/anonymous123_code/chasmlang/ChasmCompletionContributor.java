@@ -3,18 +3,19 @@ package io.github.anonymous123_code.chasmlang;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import static com.intellij.patterns.PlatformPatterns.*;
-import com.intellij.patterns.PsiElementPattern;
-import com.intellij.psi.PsiElement;
+
 import com.intellij.util.ProcessingContext;
 import io.github.anonymous123_code.chasmlang.psi.ChassemblyTypes;
 import org.jetbrains.annotations.NotNull;
 
 public class ChasmCompletionContributor extends CompletionContributor {
-    private final PsiElementPattern.Capture<PsiElement> mapKeyPattern = psiElement(ChassemblyTypes.IDENTIFIER).withParent(psiElement(ChassemblyTypes.MAP_EXPRESSION)); //TODO: String keys dont work
     public ChasmCompletionContributor() {
         extend(
                 CompletionType.BASIC,
-                and(mapKeyPattern, not(mapKeyPattern.inside(psiElement(ChassemblyTypes.MAP_EXPRESSION)))),
+                and(
+                        psiElement(ChassemblyTypes.IDENTIFIER).withParent(psiElement(ChassemblyTypes.MAP_KEY)),
+                        not(psiElement(ChassemblyTypes.IDENTIFIER).withParent(psiElement(ChassemblyTypes.MAP_KEY).withParent(psiElement(/*MAP_KEY_VALUE_PAIR*/).withParent(psiElement(/*MAP_EXPRESSION*/).inside(true, psiElement(ChassemblyTypes.MAP_EXPRESSION))))))
+                ),
                 new CompletionProvider<>() {
                     @Override
                     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {
@@ -25,7 +26,7 @@ public class ChasmCompletionContributor extends CompletionContributor {
         );
         extend(
                 CompletionType.BASIC,
-                and(mapKeyPattern, mapKeyPattern.inside(psiElement(ChassemblyTypes.MAP_EXPRESSION))),
+                psiElement(ChassemblyTypes.IDENTIFIER).withParent(psiElement(ChassemblyTypes.MAP_KEY).withParent(psiElement(/*MAP_KEY_VALUE_PAIR*/).withParent(psiElement(/*MAP_EXPRESSION*/).inside(true, psiElement(ChassemblyTypes.MAP_EXPRESSION))))),
                 new CompletionProvider<>() {
                     @Override
                     protected void addCompletions(@NotNull CompletionParameters parameters, @NotNull ProcessingContext context, @NotNull CompletionResultSet result) {

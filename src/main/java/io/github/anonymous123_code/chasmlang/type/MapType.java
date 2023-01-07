@@ -1,6 +1,7 @@
 package io.github.anonymous123_code.chasmlang.type;
 
 import com.intellij.codeInsight.lookup.LookupElement;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -16,16 +17,19 @@ public class MapType implements Type {
         this.types = types;
     }
 
+    @Contract(pure = true)
     @Override
     public @NotNull List<LookupElement> getCompletions() {
         return Type.super.getCompletions();
     }
 
+    @Contract(pure = true)
     @Override
     public @NotNull List<LookupElement> getCompletions(@NotNull Type givenType) {
         return Type.super.getCompletions(givenType);
     }
 
+    @Contract(pure = true)
     @Override
     public boolean mayServeAs(@NotNull Type other) {
         if (Type.mayServeAs(this, other)) return true;
@@ -37,6 +41,7 @@ public class MapType implements Type {
         return true;
     }
 
+    @Contract(pure = true)
     @Override
     public @NotNull String asString() {
         return types.entrySet().stream()
@@ -44,6 +49,7 @@ public class MapType implements Type {
                 .collect(Collectors.joining(", ", "{","}"));
     }
 
+    @Contract(pure = true)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,6 +58,7 @@ public class MapType implements Type {
         return types.equals(mapType.types);
     }
 
+    @Contract(pure = true)
     @Override
     public int hashCode() {
         return Objects.hash(types);

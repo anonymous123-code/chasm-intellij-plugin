@@ -1,5 +1,6 @@
 package io.github.anonymous123_code.chasmlang.type;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -13,6 +14,7 @@ public class ListType implements Type{
         this.types = types;
     }
 
+    @Contract(pure = true)
     @Override
     public boolean mayServeAs(@NotNull Type other) {
         if (Type.mayServeAs(this, other)) return true;
@@ -27,10 +29,12 @@ public class ListType implements Type{
         return true;
     }
 
+    @Contract(pure = true)
     public int getLength() {
         return this.types.length;
     }
 
+    @Contract(pure = true)
     @Override
     public @NotNull String asString() {
         return Arrays.stream(this.types)
@@ -50,6 +54,7 @@ public class ListType implements Type{
         return new SingleTypeListType(firstType, types.length);
     }
 
+    @Contract(pure = true)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,6 +63,7 @@ public class ListType implements Type{
         return Arrays.equals(types, listType.types);
     }
 
+    @Contract(pure = true)
     @Override
     public int hashCode() {
         return Arrays.hashCode(types);
@@ -72,11 +78,13 @@ public class ListType implements Type{
             this.length = length;
         }
 
+        @Contract(pure = true)
         @Override
         public int getLength() {
             return this.length;
         }
 
+        @Contract(pure = true)
         @Override
         public boolean mayServeAs(@NotNull Type other) {
             return Type.mayServeAs(this, other) ||
@@ -85,11 +93,13 @@ public class ListType implements Type{
                     this.contentType.mayServeAs(((SingleTypeListType) other).contentType));
         }
 
+        @Contract(pure = true)
         @Override
         public @NotNull String asString() {
             return this.contentType.asString() + "[" + length + "]";
         }
 
+        @Contract(pure = true)
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -98,6 +108,7 @@ public class ListType implements Type{
             return length == that.length && contentType.equals(that.contentType);
         }
 
+        @Contract(pure = true)
         @Override
         public int hashCode() {
             return Objects.hash(contentType, length);

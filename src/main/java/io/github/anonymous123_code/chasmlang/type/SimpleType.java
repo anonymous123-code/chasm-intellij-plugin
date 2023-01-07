@@ -10,16 +10,19 @@ public class SimpleType implements Type{
     public SimpleType(String name) {
         this.name = name;
     }
+    @Contract(pure = true)
     @Override
     public boolean mayServeAs(@NotNull Type other) {
         return Type.mayServeAs(this, other) || other.asString().equals(this.asString());
     }
 
+    @Contract(pure = true)
     @Override
     public @NotNull String asString() {
         return this.name;
     }
 
+    @Contract(pure = true)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -28,6 +31,7 @@ public class SimpleType implements Type{
         return name.equals(that.name);
     }
 
+    @Contract(pure = true)
     @Override
     public int hashCode() {
         return Objects.hash(name);
@@ -53,6 +57,7 @@ public class SimpleType implements Type{
     public static SimpleType character() {
         return new SimpleType("Char");
     }
+    @Contract(pure = true, value = "->new")
     public static SimpleType nil() {
         return new SimpleType("Null");
     }

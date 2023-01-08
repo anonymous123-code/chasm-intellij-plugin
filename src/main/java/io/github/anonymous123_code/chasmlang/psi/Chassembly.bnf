@@ -11,31 +11,33 @@
   elementTypeHolderClass="io.github.anonymous123_code.chasmlang.psi.ChassemblyTypes"
   elementTypeClass="io.github.anonymous123_code.chasmlang.psi.ChassemblyElementType"
   tokenTypeClass="io.github.anonymous123_code.chasmlang.psi.ChassemblyTokenType"
+
+  psiImplUtilClass="io.github.anonymous123_code.chasmlang.psi.extend.ChassemblyPsiImplUtil"
 }
 
 chassemblyFile ::= expression
 
-expression ::= (lambdaExpression | ternaryExpression)
+expression ::= (lambdaExpression | ternaryExpression) {methods=[getType]}
 
-lambdaExpression ::= IDENTIFIER LAMBDA_OPERATOR expression
-ternaryExpression ::= booleanOrExpression (TERNARY_OPERATOR ternaryExpression COLON ternaryExpression)?
+lambdaExpression ::= IDENTIFIER LAMBDA_OPERATOR expression {methods=[getType]}
+ternaryExpression ::= booleanOrExpression (TERNARY_OPERATOR ternaryExpression COLON ternaryExpression)? {methods=[getType]}
 
-booleanOrExpression ::= booleanAndExpression (BOOLEAN_OR_OPERATOR booleanAndExpression)*
-booleanAndExpression ::= bitwiseOrExpression (BOOLEAN_AND_OPERATOR bitwiseOrExpression)*
+booleanOrExpression ::= booleanAndExpression (BOOLEAN_OR_OPERATOR booleanAndExpression)* {methods=[getType]}
+booleanAndExpression ::= bitwiseOrExpression (BOOLEAN_AND_OPERATOR bitwiseOrExpression)* {methods=[getType]}
 
-bitwiseOrExpression ::= bitwiseXorExpression (BITWISE_OR_OPERATOR bitwiseXorExpression)*
-bitwiseXorExpression ::= bitwiseAndExpression (BITWISE_XOR_OPERATOR bitwiseAndExpression)*
-bitwiseAndExpression ::= equalityExpression (BITWISE_AND_OPERATOR equalityExpression)*
+bitwiseOrExpression ::= bitwiseXorExpression (BITWISE_OR_OPERATOR bitwiseXorExpression)* {methods=[getType]}
+bitwiseXorExpression ::= bitwiseAndExpression (BITWISE_XOR_OPERATOR bitwiseAndExpression)* {methods=[getType]}
+bitwiseAndExpression ::= equalityExpression (BITWISE_AND_OPERATOR equalityExpression)* {methods=[getType]}
 
-equalityExpression ::= relationalExpression ((EQUAL_OPERATOR | NOT_EQUAL_OPERATOR) relationalExpression)*
-relationalExpression ::= shiftExpression ((LESS_THAN_OPERATOR | LESS_THAN_OR_EQUAL_OPERATOR | GREATER_THAN_OPERATOR | GREATER_THAN_OR_EQUAL_OPERATOR) shiftExpression)*
+equalityExpression ::= relationalExpression ((EQUAL_OPERATOR | NOT_EQUAL_OPERATOR) relationalExpression)* {methods=[getType]}
+relationalExpression ::= shiftExpression ((LESS_THAN_OPERATOR | LESS_THAN_OR_EQUAL_OPERATOR | GREATER_THAN_OPERATOR | GREATER_THAN_OR_EQUAL_OPERATOR) shiftExpression)* {methods=[getType]}
 
-shiftExpression ::= additiveExpression ((SHIFT_LEFT_OPERATOR | SHIFT_RIGHT_OPERATOR | SHIFT_RIGHT_UNSIGNED_OPERATOR) additiveExpression)*
+shiftExpression ::= additiveExpression ((SHIFT_LEFT_OPERATOR | SHIFT_RIGHT_OPERATOR | SHIFT_RIGHT_UNSIGNED_OPERATOR) additiveExpression)* {methods=[getType]}
 
-additiveExpression ::= multiplicativeExpression ((PLUS_OPERATOR | MINUS_OPERATOR) multiplicativeExpression)*
-multiplicativeExpression ::= unaryExpression ((MULTIPLY_OPERATOR | DIVIDE_OPERATOR | MODULO_OPERATOR) unaryExpression)*
+additiveExpression ::= multiplicativeExpression ((PLUS_OPERATOR | MINUS_OPERATOR) multiplicativeExpression)* {methods=[getType]}
+multiplicativeExpression ::= unaryExpression ((MULTIPLY_OPERATOR | DIVIDE_OPERATOR | MODULO_OPERATOR) unaryExpression)* {methods=[getType]}
 
-unaryExpression ::= (PLUS_OPERATOR | MINUS_OPERATOR | NOT_OPERATOR | INVERT_OPERATOR)? argumentExpression
+unaryExpression ::= (PLUS_OPERATOR | MINUS_OPERATOR | NOT_OPERATOR | INVERT_OPERATOR)? argumentExpression {methods=[getType]}
 
 argumentExpression ::= primaryExpression (call | arrayAccess | propertyAccess)*
 
@@ -77,7 +79,7 @@ private mapKeyValuePairRecovery ::= !(RIGHT_BRACES | COMMA)
 mapKey ::= (IDENTIFIER | STRING_LITERAL) { recoverWhile=mapKeyRecovery }
 private mapKeyRecovery ::= !(RIGHT_BRACES | COMMA | COLON)
 
-mapValue ::= expression { recoverWhile=mapValueRecovery }
+mapValue ::= expression { recoverWhile=mapValueRecovery methods=[getType]}
 private mapValueRecovery ::= !(RIGHT_BRACES | COMMA)
 
 // List, map, call, map access need recover

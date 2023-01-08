@@ -1,7 +1,5 @@
 package io.github.anonymous123_code.chasmlang.psi.extend;
 
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
 import io.github.anonymous123_code.chasmlang.psi.*;
 import io.github.anonymous123_code.chasmlang.type.*;
 
@@ -67,18 +65,67 @@ public class ChassemblyPsiImplUtil {
     }
 
     public static Type getType(ChassemblyAdditiveExpression value) {
+        ChassemblyMultiplicativeExpression expression = value.getMultiplicativeExpression();
+        if (expression != null) return expression.getType();
+        ChassemblyAddition addition = value.getAddition();
+        if (addition != null) return addition.getType();
+        return value.getSubtraction().getType();
+    }
+
+    public static Type getType(ChassemblyAddition value) {
         List<ChassemblyMultiplicativeExpression> multiplicativeExpressionList = value.getMultiplicativeExpressionList();
-        if (multiplicativeExpressionList.size() == 1) return multiplicativeExpressionList.get(0).getType();
-        Type leftType = multiplicativeExpressionList.get(0).getType();
-        if (leftType instanceof MapType) {
-
+        Type firstType = multiplicativeExpressionList.get(0).getType();
+        if (firstType.mayServeAs(SimpleType.string())) {
+            return SimpleType.string();
+        } else if (firstType.mayServeAs(SimpleType.float_())) {
+            return SimpleType.float_();
         }
-        if (leftType instanceof ListType) {
 
+        Type leftType;
+        Type rightType;
+        if (multiplicativeExpressionList.size() == 1) {
+            ChassemblyAddition addition = value.getAddition();
+            leftType = addition==null?value.getSubtraction().getType():addition.getType();
+            rightType = firstType;
+        } else {
+            leftType = firstType;
+            rightType = multiplicativeExpressionList.get(1).getType();
         }
-        List<LeafPsiElement> leaves = PsiTreeUtil.getChildrenOfTypeAsList(value, LeafPsiElement.class);
 
-        return new AnyType();
+        if (leftType instanceof MapType && rightType instanceof MapType) {
+            return ((MapType) leftType).withAdded((MapType) rightType);
+        } else if (leftType instanceof ListType && rightType instanceof ListType) {
+            return ((ListType) leftType).withAdded((ListType) rightType);
+        } else if (leftType.mayServeAs(SimpleType.float_()) || rightType.mayServeAs(SimpleType.float_())) {
+            return SimpleType.float_();
+        } else {
+            return SimpleType.integer();
+        }
+    }
+
+    public static Type getType(ChassemblySubtraction value) {
+        List<ChassemblyMultiplicativeExpression> multiplicativeExpressionList = value.getMultiplicativeExpressionList();
+        Type firstType = multiplicativeExpressionList.get(0).getType();
+        if (firstType.mayServeAs(SimpleType.float_())) {
+            return SimpleType.float_();
+        }
+
+        Type leftType;
+        Type rightType;
+        if (multiplicativeExpressionList.size() == 1) {
+            ChassemblyAddition addition = value.getAddition();
+            leftType = addition==null?value.getSubtraction().getType():addition.getType();
+            rightType = firstType;
+        } else {
+            leftType = firstType;
+            rightType = multiplicativeExpressionList.get(1).getType();
+        }
+
+        if (leftType.mayServeAs(SimpleType.float_()) || rightType.mayServeAs(SimpleType.float_())) {
+            return SimpleType.float_();
+        } else {
+            return SimpleType.integer();
+        }
     }
 
     public static Type getType(ChassemblyMultiplicativeExpression value) {

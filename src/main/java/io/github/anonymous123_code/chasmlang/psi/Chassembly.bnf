@@ -86,8 +86,8 @@ relationalExpression ::= shiftExpression ((LESS_THAN_OPERATOR | LESS_THAN_OR_EQU
 shiftExpression ::= additiveExpression ((SHIFT_LEFT_OPERATOR | SHIFT_RIGHT_OPERATOR | SHIFT_RIGHT_UNSIGNED_OPERATOR) additiveExpression)* {methods=[getType]}
 
 additiveExpression ::= multiplicativeExpression (addition | subtraction)* {methods=[getType]}
-left addition ::= PLUS_OPERATOR multiplicativeExpression
-left subtraction ::= MINUS_OPERATOR multiplicativeExpression
+left addition ::= PLUS_OPERATOR multiplicativeExpression {methods=[getType]}
+left subtraction ::= MINUS_OPERATOR multiplicativeExpression {methods=[getType]}
 multiplicativeExpression ::= unaryExpression ((MULTIPLY_OPERATOR | DIVIDE_OPERATOR | MODULO_OPERATOR) unaryExpression)* {methods=[getType]}
 
 unaryExpression ::= (PLUS_OPERATOR | MINUS_OPERATOR | NOT_OPERATOR | INVERT_OPERATOR)? argumentExpression {methods=[getType]}

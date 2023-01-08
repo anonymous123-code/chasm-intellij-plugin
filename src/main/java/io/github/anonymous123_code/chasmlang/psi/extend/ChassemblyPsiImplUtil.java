@@ -142,7 +142,7 @@ public class ChassemblyPsiImplUtil {
 
     public static Type getType(ChassemblyUnaryExpression value) {
         ChassemblyNumberReturningUnary numberReturningUnary = value.getNumberReturningUnary();
-        if (numberReturningUnary != null) return numberReturningUnary.getType;
+        if (numberReturningUnary != null) return numberReturningUnary.getType();
         ChassemblyBooleanReturningUnary booleanReturningUnary = value.getBooleanReturningUnary();
         if (booleanReturningUnary != null) return booleanReturningUnary.getType();
         return value.getIntegerReturningUnary().getType();

@@ -9,9 +9,4 @@ public class ChassemblyTokenType extends IElementType {
     public ChassemblyTokenType(@NonNls @NotNull String debugName) {
         super(debugName, ChassemblyLanguage.INSTANCE);
     }
-
-    @Override
-    public String toString() {
-        return "ChassemblyTokenType." + super.toString();
-    }
 }

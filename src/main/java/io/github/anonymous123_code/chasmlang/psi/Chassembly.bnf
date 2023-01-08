@@ -90,21 +90,25 @@ left addition ::= PLUS_OPERATOR multiplicativeExpression {methods=[getType]}
 left subtraction ::= MINUS_OPERATOR multiplicativeExpression {methods=[getType]}
 multiplicativeExpression ::= unaryExpression ((MULTIPLY_OPERATOR | DIVIDE_OPERATOR | MODULO_OPERATOR) unaryExpression)* {methods=[getType]}
 
-unaryExpression ::= (PLUS_OPERATOR | MINUS_OPERATOR | NOT_OPERATOR | INVERT_OPERATOR)? argumentExpression {methods=[getType]}
+unaryExpression ::= numberReturningUnary | booleanReturningUnary | integerReturningUnary {methods=[getType]}
 
-argumentExpression ::= primaryExpression (call | arrayAccess | propertyAccess)*
+booleanReturningUnary ::= NOT_OPERATOR argumentExpression {methods=[getType]}
+numberReturningUnary ::= (PLUS_OPERATOR | MINUS_OPERATOR)? argumentExpression {methods=[getType]}
+integerReturningUnary ::= INVERT_OPERATOR argumentExpression {methods=[getType]}
 
-left call ::= LEFT_PARANTHESES callParam RIGHT_PARANTHESES
+argumentExpression ::= primaryExpression (call | arrayAccess | propertyAccess)* {methods=[getType]}
+
+left call ::= LEFT_PARANTHESES callParam RIGHT_PARANTHESES {methods=[getType]}
 private callParam ::= expression { recoverWhile = callParamRecovery}
 private callParamRecovery ::= !(RIGHT_PARANTHESES)
 
-left arrayAccess ::= LEFT_BRACKETS arrayAccessParam RIGHT_BRACKETS
+left arrayAccess ::= LEFT_BRACKETS arrayAccessParam RIGHT_BRACKETS {methods=[getType]}
 private arrayAccessParam ::= expression {recoverWhile = arrayAccessParamRecovery}
 private arrayAccessParamRecovery ::= !(RIGHT_BRACKETS)
 
-left propertyAccess ::= DOT (IDENTIFIER | REFERENCE_LITERAL)
+left propertyAccess ::= DOT (IDENTIFIER | REFERENCE_LITERAL) {methods=[getType]}
 
-primaryExpression ::= literalExpression | referenceExpression | parenthesesExpression | listExpression | mapExpression
+primaryExpression ::= literalExpression | referenceExpression | parenthesesExpression | listExpression | mapExpression {methods=[getType]}
 
 literalExpression ::= (NULL_LITERAL | BOOLEAN_LITERAL | DEC_INTEGER_LITERAL | HEX_INTEGER_LITERAL | BIN_INTGER_LITERAL | FLOAT_LITERAL | STRING_LITERAL | CHAR_LITERAL)
 

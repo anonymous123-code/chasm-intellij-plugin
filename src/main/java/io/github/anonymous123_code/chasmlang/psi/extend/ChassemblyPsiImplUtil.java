@@ -141,8 +141,48 @@ public class ChassemblyPsiImplUtil {
     }
 
     public static Type getType(ChassemblyUnaryExpression value) {
+        ChassemblyNumberReturningUnary numberReturningUnary = value.getNumberReturningUnary();
+        if (numberReturningUnary != null) return numberReturningUnary.getType;
+        ChassemblyBooleanReturningUnary booleanReturningUnary = value.getBooleanReturningUnary();
+        if (booleanReturningUnary != null) return booleanReturningUnary.getType();
+        return value.getIntegerReturningUnary().getType();
+    }
+
+    public static Type getType(ChassemblyNumberReturningUnary value) {
+        return value.getArgumentExpression().getType();
+    }
+
+    public static Type getType(ChassemblyBooleanReturningUnary value) {
+        return SimpleType.bool();
+    }
+
+    public static Type getType(ChassemblyIntegerReturningUnary value) {
+        return SimpleType.integer();
+    }
+
+    public static Type getType(ChassemblyArgumentExpression value) {
+        ChassemblyPrimaryExpression primaryExpression = value.getPrimaryExpression();
+        if (primaryExpression != null) return primaryExpression.getType();
+        ChassemblyArrayAccess arrayAccess = value.getArrayAccess();
+        if (arrayAccess != null) return arrayAccess.getType();
+        ChassemblyPropertyAccess propertyAccess = value.getPropertyAccess();
+        if (propertyAccess != null) return propertyAccess.getType();
+        return value.getCall().getType();
+    }
+
+    public static Type getType(ChassemblyPrimaryExpression value) {
         return new AnyType();
     }
 
+    public static Type getType(ChassemblyPropertyAccess value) {
+        return new AnyType();
+    }
 
+    public static Type getType(ChassemblyArrayAccess value) {
+        return new AnyType();
+    }
+
+    public static Type getType(ChassemblyCall value) {
+        return new AnyType();
+    }
 }

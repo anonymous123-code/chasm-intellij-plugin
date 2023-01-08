@@ -17,6 +17,13 @@ public class MapType implements Type {
         this.types = types;
     }
 
+    @Contract(pure = true, value = "_->new")
+    public MapType withAdded(MapType that) {
+        HashMap<String, Type> resultHashmap = (HashMap<String, Type>) types.clone();
+        resultHashmap.putAll(that.types);
+        return new MapType(resultHashmap);
+    }
+
     @Contract(pure = true)
     @Override
     public @NotNull List<LookupElement> getCompletions() {

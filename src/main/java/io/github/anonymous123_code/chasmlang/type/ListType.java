@@ -14,6 +14,21 @@ public class ListType implements Type{
         this.types = types;
     }
 
+    @Contract(pure = true, value = "_->new")
+    public ListType withAdded(ListType that) {
+        that = that.asNormalList();
+        ListType self = this.asNormalList();
+        Type[] resultTypes = new Type[self.types.length + that.types.length];
+        System.arraycopy(self.types, 0, resultTypes, 0, self.types.length);
+        System.arraycopy(that.types, 0, resultTypes, self.types.length, that.types.length);
+        return ListType.of(resultTypes);
+    }
+
+    @Contract(pure = true)
+    public ListType asNormalList() {
+        return this;
+    }
+
     @Contract(pure = true)
     @Override
     public boolean mayServeAs(@NotNull Type other) {
@@ -52,6 +67,10 @@ public class ListType implements Type{
             if (!type.mayServeAs(firstType)) return new ListType(types);
         }
         return new SingleTypeListType(firstType, types.length);
+    }
+
+    public static ListType of(Type... types) {
+        return of(false, types);
     }
 
     @Contract(pure = true)
@@ -97,6 +116,14 @@ public class ListType implements Type{
         @Override
         public @NotNull String asString() {
             return this.contentType.asString() + "[" + length + "]";
+        }
+
+        @Contract(pure = true)
+        @Override
+        public ListType asNormalList() {
+            Type[] list = new Type[length];
+            Arrays.fill(list, contentType);
+            return ListType.of(true, list);
         }
 
         @Contract(pure = true)

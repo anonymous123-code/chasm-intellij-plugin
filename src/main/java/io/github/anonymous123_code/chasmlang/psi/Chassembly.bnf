@@ -13,6 +13,57 @@
   tokenTypeClass="io.github.anonymous123_code.chasmlang.psi.ChassemblyTokenType"
 
   psiImplUtilClass="io.github.anonymous123_code.chasmlang.psi.extend.ChassemblyPsiImplUtil"
+
+  tokens = [
+    PLUS_OPERATOR = "+"
+    MINUS_OPERATOR = "-"
+    NOT_OPERATOR = "!"
+    INVERT_OPERATOR = "~"
+    MULTIPLY_OPERATOR = "*"
+    DIVIDE_OPERATOR = "/"
+    MODULO_OPERATOR = "%"
+    SHIFT_LEFT_OPERATOR = "<<"
+    SHIFT_RIGHT_OPERATOR = ">>"
+    SHIFT_RIGHT_UNSIGNED_OPERATOR = ">>>"
+    LESS_THAN_OPERATOR = "<"
+    LESS_THAN_OR_EQUAL_OPERATOR = "<="
+    GREATER_THAN_OPERATOR = ">"
+    GREATER_THAN_OR_EQUAL_OPERATOR = ">="
+    EQUAL_OPERATOR = "="
+    NOT_EQUAL_OPERATOR = "!="
+    BITWISE_AND_OPERATOR = "&"
+    BITWISE_XOR_OPERATOR = "^"
+    BITWISE_OR_OPERATOR = "|"
+    BOOLEAN_AND_OPERATOR = "&&"
+    BOOLEAN_OR_OPERATOR = "||"
+    TERNARY_OPERATOR = "?"
+    LAMBDA_OPERATOR = "->"
+
+    COMMA = ","
+    DOT = "."
+    COLON = ":"
+    LEFT_PARANTHESES = "("
+    RIGHT_PARANTHESES = ")"
+    LEFT_BRACKETS = "["
+    RIGHT_BRACKETS = "]"
+    LEFT_BRACES = "{"
+    RIGHT_BRACES = "}"
+
+    LINE_COMMENT = "regexp://([^\n])*"
+    BLOCK_COMMENT = "regexp:/[*]([^*]|([*][^/]))*[*]/"
+
+    NULL_LITERAL = "null"
+    BOOLEAN_LITERAL = "regexp:(true|false)"
+    DEC_INTEGER_LITERAL = "regexp:[+-]?[0-9]+"
+    HEX_INTEGER_LITERAL = "regexp:[+-]?0x[0-9a-fA-F]+"
+    BIN_INTGER_LITERAL = "regexp:[+-]?0b[01]+"
+    FLOAT_LITERAL = "regexp:[+-]?(NaN|Infinity|((([0-9]+\.[0-9]*)|(\.[0-9]+))([eE][+-]?[0-9]+)?))"
+    STRING_LITERAL = "regexp:\"([^\"\\]|(\\\")|(\\\\))*\""
+    CHAR_LITERAL = "regexp:'([^'\\]|(\\')|(\\\\))'"
+    REFERENCE_LITERAL = "regexp:`([^`\\]|(\\`)|(\\\\))*`"
+
+    IDENTIFIER = "regexp:[_a-zA-Z][_a-zA-Z0-9]*"
+  ]
 }
 
 chassemblyFile ::= expression

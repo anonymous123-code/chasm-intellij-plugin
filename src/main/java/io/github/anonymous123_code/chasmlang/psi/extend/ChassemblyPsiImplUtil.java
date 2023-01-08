@@ -13,7 +13,8 @@ public class ChassemblyPsiImplUtil {
     }
 
     public static Type getType(ChassemblyExpression value) {
-        return value.getLambdaExpression() == null ? value.getTernaryExpression().getType() : value.getLambdaExpression().getType();
+        ChassemblyLambdaExpression lambdaExpression = value.getLambdaExpression();
+        return lambdaExpression == null ? value.getTernaryExpression().getType() : lambdaExpression.getType();
     }
 
     public static Type getType(ChassemblyTernaryExpression value) {
@@ -26,35 +27,43 @@ public class ChassemblyPsiImplUtil {
     }
 
     public static Type getType(ChassemblyBooleanOrExpression value) {
-        return value.getBooleanAndExpressionList().size() == 1 ? value.getBooleanAndExpressionList().get(0).getType() : SimpleType.bool();
+        List<ChassemblyBooleanAndExpression> booleanAndExpressionList = value.getBooleanAndExpressionList();
+        return booleanAndExpressionList.size() == 1 ? booleanAndExpressionList.get(0).getType() : SimpleType.bool();
     }
 
     public static Type getType(ChassemblyBooleanAndExpression value) {
-        return value.getBitwiseOrExpressionList().size() == 1 ? value.getBitwiseOrExpressionList().get(0).getType() : SimpleType.bool();
+        List<ChassemblyBitwiseOrExpression> bitwiseOrExpressionList = value.getBitwiseOrExpressionList();
+        return bitwiseOrExpressionList.size() == 1 ? bitwiseOrExpressionList.get(0).getType() : SimpleType.bool();
     }
 
     public static Type getType(ChassemblyBitwiseOrExpression value) {
-        return value.getBitwiseXorExpressionList().size() == 1 ? value.getBitwiseXorExpressionList().get(0).getType() : SimpleType.integer();
+        List<ChassemblyBitwiseXorExpression> bitwiseXorExpressionList = value.getBitwiseXorExpressionList();
+        return bitwiseXorExpressionList.size() == 1 ? bitwiseXorExpressionList.get(0).getType() : SimpleType.integer();
     }
 
     public static Type getType(ChassemblyBitwiseXorExpression value) {
-        return value.getBitwiseAndExpressionList().size() == 1 ? value.getBitwiseAndExpressionList().get(0).getType() : SimpleType.integer();
+        List<ChassemblyBitwiseAndExpression> bitwiseAndExpressionList = value.getBitwiseAndExpressionList();
+        return bitwiseAndExpressionList.size() == 1 ? bitwiseAndExpressionList.get(0).getType() : SimpleType.integer();
     }
 
     public static Type getType(ChassemblyBitwiseAndExpression value) {
-        return value.getEqualityExpressionList().size() == 1 ? value.getEqualityExpressionList().get(0).getType() : SimpleType.integer();
+        List<ChassemblyEqualityExpression> equalityExpressionList = value.getEqualityExpressionList();
+        return equalityExpressionList.size() == 1 ? equalityExpressionList.get(0).getType() : SimpleType.integer();
     }
 
     public static Type getType(ChassemblyEqualityExpression value) {
-        return value.getRelationalExpressionList().size() == 1 ? value.getRelationalExpressionList().get(0).getType() : SimpleType.bool();
+        List<ChassemblyRelationalExpression> relationalExpressionList = value.getRelationalExpressionList();
+        return relationalExpressionList.size() == 1 ? relationalExpressionList.get(0).getType() : SimpleType.bool();
     }
 
     public static Type getType(ChassemblyRelationalExpression value) {
-        return value.getShiftExpressionList().size() == 1 ? value.getShiftExpressionList().get(0).getType() : SimpleType.bool();
+        List<ChassemblyShiftExpression> shiftExpressionList = value.getShiftExpressionList();
+        return shiftExpressionList.size() == 1 ? shiftExpressionList.get(0).getType() : SimpleType.bool();
     }
 
     public static Type getType(ChassemblyShiftExpression value) {
-        return value.getAdditiveExpressionList().size() == 1 ? value.getAdditiveExpressionList().get(0).getType() : SimpleType.integer();
+        List<ChassemblyAdditiveExpression> additiveExpressionList = value.getAdditiveExpressionList();
+        return additiveExpressionList.size() == 1 ? additiveExpressionList.get(0).getType() : SimpleType.integer();
     }
 
     public static Type getType(ChassemblyAdditiveExpression value) {
